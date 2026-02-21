@@ -228,7 +228,7 @@ const Checkout = () => {
                       </div>
                     </label>
 
-                    <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                    {/* <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
                         type="radio"
                         name="payment"
@@ -258,7 +258,7 @@ const Checkout = () => {
                         <span className="font-medium">UPI</span>
                         <p className="text-sm text-gray-500">Pay using Google Pay, PhonePe, etc.</p>
                       </div>
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className="flex gap-4 mt-6">

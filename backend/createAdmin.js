@@ -31,7 +31,7 @@ const createAdmin = async () => {
         city: 'Admin City',
         state: 'Admin State',
         zipCode: '12345',
-        country: 'USA'
+        country: 'India'
       }
     });
 

@@ -9,11 +9,9 @@ exports.protect = async (req, res, next) => {
         // Check for token in headers
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1];
-            console.log('Token found in headers');
         }
 
         if (!token) {
-            console.log('No token found');
             return res.status(401).json({
                 success: false,
                 message: 'Not authorized to access this route'
@@ -23,13 +21,11 @@ exports.protect = async (req, res, next) => {
         try {
             // Verify token
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('Token verified for user:', decoded.id);
 
             // Get user from token
             const user = await User.findById(decoded.id).select('-password');
 
             if (!user) {
-                console.log('User not found for id:', decoded.id);
                 return res.status(401).json({
                     success: false,
                     message: 'User not found'
@@ -38,17 +34,14 @@ exports.protect = async (req, res, next) => {
 
             // Check if user is blocked
             if (user.isBlocked) {
-                console.log('User is blocked:', user.id);
                 return res.status(403).json({
                     success: false,
                     message: 'Your account has been blocked. Please contact admin.'
                 });
             }
 
-            // Attach user to request object
             req.user = user;
-            console.log('User authenticated:', user.id);
-            next(); // Make sure next() is called
+            next();
         } catch (error) {
             console.error('Token verification error:', error);
             return res.status(401).json({

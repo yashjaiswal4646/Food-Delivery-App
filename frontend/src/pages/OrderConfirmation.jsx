@@ -5,7 +5,7 @@ import { FaCheckCircle, FaTruck, FaClock } from 'react-icons/fa';
 import Loader from '../components/Common/Loader';
 import Error from '../components/Common/Error';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://food-delivery-api-kgax.onrender.com/api';
 
 const OrderConfirmation = () => {
   const { id } = useParams();

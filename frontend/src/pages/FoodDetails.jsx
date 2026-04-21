@@ -10,7 +10,7 @@ import ReviewModal from '../components/UI/ReviewModal';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://food-delivery-api-kgax.onrender.com/api';
 
 const FoodDetails = () => {
   const { id } = useParams();

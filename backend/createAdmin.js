@@ -20,20 +20,22 @@ const createAdmin = async () => {
     }
 
     // Create admin user
-    const admin = await User.create({
-      name: 'Admin User',
-      email: 'admin@example.com',
-      password: 'admin123',
-      phone: '1234567890',
-      role: 'admin',
-      address: {
-        street: 'Admin Street',
-        city: 'Admin City',
-        state: 'Admin State',
-        zipCode: '12345',
-        country: 'India'
-      }
-    });
+    const hashedPassword = await bcrypt.hash("admin123", 10);
+
+const admin = await User.create({
+  name: 'Admin User',
+  email: 'admin@example.com',
+  password: hashedPassword,
+  phone: '1234567890',
+  role: 'admin',
+  address: {
+    street: 'Admin Street',
+    city: 'Admin City',
+    state: 'Admin State',
+    zipCode: '12345',
+    country: 'India'
+  }
+});
 
     console.log('Admin created successfully:', {
       name: admin.name,

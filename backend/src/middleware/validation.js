@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-// Validation rules
+// Validation rules for registration
 const validateRegister = [
     body('name')
         .trim()
@@ -21,6 +21,7 @@ const validateRegister = [
         .notEmpty().withMessage('Phone number is required')
         .matches(/^[0-9]{10}$/).withMessage('Please provide a valid 10-digit phone number'),
     
+    // Error handler middleware
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -33,6 +34,7 @@ const validateRegister = [
     }
 ];
 
+// Validation rules for login
 const validateLogin = [
     body('email')
         .trim()
@@ -43,41 +45,7 @@ const validateLogin = [
     body('password')
         .notEmpty().withMessage('Password is required'),
     
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                success: false,
-                errors: errors.array()
-            });
-        }
-        next();
-    }
-];
-
-const validateFood = [
-    body('name')
-        .trim()
-        .notEmpty().withMessage('Food name is required')
-        .isLength({ max: 100 }).withMessage('Food name cannot exceed 100 characters'),
-    
-    body('description')
-        .trim()
-        .notEmpty().withMessage('Description is required')
-        .isLength({ max: 500 }).withMessage('Description cannot exceed 500 characters'),
-    
-    body('price')
-        .notEmpty().withMessage('Price is required')
-        .isFloat({ min: 0 }).withMessage('Price must be a positive number'),
-    
-    body('category')
-        .notEmpty().withMessage('Category is required')
-        .isMongoId().withMessage('Invalid category ID'),
-    
-    body('preparationTime')
-        .notEmpty().withMessage('Preparation time is required')
-        .isInt({ min: 1 }).withMessage('Preparation time must be at least 1 minute'),
-    
+    // Error handler middleware
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -92,6 +60,5 @@ const validateFood = [
 
 module.exports = {
     validateRegister,
-    validateLogin,
-    validateFood
+    validateLogin
 };

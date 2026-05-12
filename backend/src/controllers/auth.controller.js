@@ -1,16 +1,26 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const sendEmail = require('../utils/emailService');
 
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
     try {
-        console.log('Registration attempt with:', req.body);
+        console.log('=== REGISTRATION ATTEMPT ===');
+        console.log('Request body:', req.body);
         
         const { name, email, password, phone } = req.body;
+
+        // Validate required fields
+        if (!name || !email || !password || !phone) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide all required fields'
+            });
+        }
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -21,18 +31,28 @@ exports.register = async (req, res, next) => {
             });
         }
 
-        // Create user
-        const user = await User.create({
+        // Hash the password
+        console.log('Hashing password...');
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        console.log('Password hashed successfully');
+
+        // Create user with hashed password
+        const user = new User({
             name,
             email,
-            password,
+            password: hashedPassword, // Store the hashed password
             phone
         });
 
+        console.log('Saving user to database...');
+        
+        // Save user
+        await user.save();
+        console.log('User saved successfully:', user._id);
+
         // Generate token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE
-        });
+        const token = user.getSignedJwtToken();
 
         res.status(201).json({
             success: true,
@@ -41,12 +61,25 @@ exports.register = async (req, res, next) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                phone: user.phone
             }
         });
     } catch (error) {
         console.error('Registration error:', error);
-        next(error);
+        
+        // Check for duplicate key error
+        if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email already exists'
+            });
+        }
+        
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Server error during registration'
+        });
     }
 };
 

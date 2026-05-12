@@ -9,6 +9,8 @@ import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import AdminLayout from './components/Layout/AdminLayout';
 import ScrollToTop from './components/Common/ScrollToTop'; // Import ScrollToTop
+import AIChatButton from './components/AI/AIChatButton';
+
 
 // Public Pages
 import Home from './pages/Home';
@@ -169,6 +171,7 @@ function App() {
         {/* 404 Route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      <AIChatButton />
     </div>
   );
 }

@@ -14,6 +14,8 @@ const foodRoutes = require('./src/routes/food.routes');
 const categoryRoutes = require('./src/routes/category.routes');
 const orderRoutes = require('./src/routes/order.routes');
 const cartRoutes = require('./src/routes/cart.routes');
+const aiRoutes = require('./src/routes/ai.routes');
+
 
 // Initialize express
 const app = express();
@@ -44,6 +46,8 @@ app.use('/api/foods', foodRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/ai', aiRoutes);
+
 
 // Test route
 app.get('/api/test', (req, res) => {
